@@ -1,0 +1,81 @@
+.btn {
+    margin-left: 5px;
+}
+
+.transparent{
+    background:rgba(255,255,255,0.7);
+}
+
+body {
+    font-family: 'Germania One', cursive;
+    background-image: url("../images/dungeons-dragons-dice-roller-6275.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+
+
+.header, .footer {
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    
+}
+
+#engraved {
+    text-shadow: -3px -2px 5px rgba(252, 210, 81, 0.9);
+}
+
+.header {
+    padding:50px;
+    background-image:url("../images/corrodedMetalPic.jpg");
+    background-repeat: no-repeat;
+    background-size:cover;
+    box-shadow: inset 0 0 30px #000000;
+}
+
+.footer {
+    font-size:10px;
+    padding:20px;
+    background-color:rgb(82, 99, 48);
+    color: rgba(0,0,0,0.6);
+    text-shadow: 2px 2px 2px rgba(235, 240, 234, 0.5);
+    box-shadow: inset 0 0 15px #000000;
+}
+
+#combat-table {
+    color:#ffff;
+    font-size:20px;
+}
+
+#dice-tray {
+    height: 100px;
+}
+
+/* unvisited link */
+a:link {
+    color:#333;
+}
+
+/* visited link */
+a:visited {
+    color:#333;
+}
+
+/* mouse over link */
+a:hover {
+    color:#000;
+}
+
+/* selected link */
+a:active {
+    color:#333;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}

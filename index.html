@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Germania+One">
+    <link rel="stylesheet" href="assets/css/animate.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="shortcut icon" href="assets/images/dnd.png" type="image/x-icon">
+    <link rel="icon" href="assets/images/dnd.png" type="image/x-icon">
+    <title>Dungeons and Dragons Initiative Tracker</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+</head>
+
+<body>
+
+    <div class="col-12 mb-3 p-0">
+        <div class="row-fluid header">
+            
+            <h1>
+                <i class="diceImg fas fa-dice-d20 fa-spin"></i> 
+                <span id="engraved">Dungeons and Dragons Combat Battalion</span>
+                <i class="diceImg fas fa-dice-d20 fa-spin"></i>
+            </h1>
+            
+        </div>
+    </div>
+
+    <div class="container full-size">
+        <div class="row">
+            <div class="col-md-12 col-lg-9 mb-1">
+                <!--TABLE/INITIATIVE TRACKER-->
+                <table class="table" id="combat-table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Initiative</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">H.P.</th>
+                            <th scope="col">A.C.</th>
+                            <th scope="col">Heal/Damage</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="combat-tracker">
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-12 col-lg-3">
+
+                <div class="row">
+                    <div class="col">
+                        <!-- Add New Character Button trigger modal -->
+                        <button type="button" class="btn btn-primary btn-warning btn-block mx-0 mb-2 border-white" data-toggle="modal" data-target="#exampleModalCenter">Add New Character</button>
+                    </div>
+                    <div class="modal animated zoomIn" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <!-- Header -->
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">Add New Character</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <!-- Body -->
+                                <div class="modal-body">
+                                    <form>
+                                        <label for="name-input">Character Name</label>
+                                        <input type="text" class="form form-control mb-2" id="name-input" placeholder="Name on top of Character Sheet">
+                                        <label for="InitiativeNumber-input">Initiative Roll</label>
+                                        <input type="number" name="quantity" min="0" max="50" class="form form-control mb-3" id="InitiativeNumber-input" placeholder="d20 + Initiative Modifier">
+                                        <label for="maxHealth-input">Max Health</label>
+                                        <input type="number" name="quantity" min="0" max="500" class="form form-control mb-3" id="maxHealth-input" placeholder="Max HP">
+                                        <label for="currentHP-input">Current Health</label>
+                                        <input type="number" name="quantity" min="0" max="500" class="form form-control mb-3" id="currentHealth-input" placeholder="Max HP - Damage Taken">
+                                        <label for="ArmorClass-input">Armor Class</label>
+                                        <input type="number" name="quantity" min="0" max="50" class="form form-control mb-3" id="ArmorClass-input" placeholder="AC">
+                                    </form>
+                                </div>
+                                <!-- End Buttons -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-warning" data-dismiss="modal" id="new-character">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="row">
+                    <div class="col">
+                    <!-- Add Monster -->
+                        <button type="button" class="btn btn-primary btn-warning btn-block mx-0 mb-2 border-white" data-toggle="modal" data-target="#add-monster-modal">Add Monster</button>
+                        <span id="not-on-file"></span>
+                    </div>
+                    <div class="modal animated zoomIn" id="add-monster-modal" tabindex="-1" role="dialog" aria-labelledby="add-monster-modal-title" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <!-- Header -->
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="add-monster-modal">Add Monster</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <!-- Body -->
+                                <div class="modal-body">
+                                    <form>
+                                        <label for="user-monster">Add A Monster</label>
+                                        <input type="text" class="form form-control mb-2" id="user-monster" placeholder="Monster Name">
+                                        <label for="how-many">How Many?</label>
+                                        <input type="number" name="quantity" min="1" max="50" class="form form-control mb-3" id="how-many" value="1">
+                                    </form>
+                                    <!-- End Buttons -->
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary animate" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-warning" data-dismiss="modal" id="load-monster">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Roll Dice -->
+                <div class="row border border-black mx-0 mb-2 p-2 transparent">
+                    <div class="col">
+                        <form>
+                            <div class="form-group row">
+                                <label for="number-of-dice" class="col-8">How Many Dice?</label>
+                                <div class="col-4">
+                                    <input type="number" name="quantity" min="1" max="50" class="form form-control" id="number-of-dice" value="1">                                
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="number-of-sides" class="col-8">How Many Sides?</label>
+                                <div class="col-4">
+                                    <input type="number" name="quantity" min="1" max="100" class="form form-control" id="number-of-sides" value="4">                                
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="dice-modifier" class="col-8">Is There A Modifier?</label>
+                                <div class="col-4">
+                                    <input type="number" name="quantity" min="-50" max="50" class="form form-control" id="dice-modifier" value="0">                                
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-warning btn-block mb-2 mx-auto" id="roll-dice">Roll Dice</button>
+                        </form>
+                        <div class="row">
+                            <div class="col m-3 p-2 bg-white text-center" id="dice-tray">
+                                <span id="dice-results"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 p-0">
+        <div class="row-fluid footer">
+            <i class="dragonImg fab fa-d-and-d fa-3x"></i>
+            <br><br>
+            <p>Copyright &copy; Brilliant Buccaneers</p>
+        </div>
+    </div>
+
+    <script src="assets/js/logic.js"></script>
+</body>
+
+</html>
